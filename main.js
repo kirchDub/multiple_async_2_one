@@ -4,13 +4,22 @@ function fetchPage(page) {
 }
 
 function parseAndMatch(){
-    let prArray = [];
-    for( i = 1; i < 100; i++) {
-        try {
-        prArray.push(fetchPage(i));
-        } catch(e){}    
-    }
+        let prArray = [];
+        let i = 0;
+        let fp_promiss = null;
+        while ( i < 100) {
+            i = i + 1;
+            fp_promiss = fetchPage(i);
+            if (fp_promiss instanceof Promise) {
+                prArray.push(fp_promiss);
 
+            } 
+            else {
+                console.log('no');
+                i = -1;
+                return Promise.all(prArray);
+            }
+        }
 
     return Promise.all(prArray);
 }
